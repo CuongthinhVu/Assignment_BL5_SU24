@@ -6,6 +6,7 @@ package controller;
 
 import data_access.Account_DAO;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,10 +38,17 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String remember_me = request.getParameter("remember_me");
         User user = dao.login(email,password);
         if(user==null){
             response.sendRedirect(request.getContextPath()+"/login");
             return;
+        }
+        
+        if (remember_me != null && remember_me.equals("true")) {
+            Cookie userCookie = new Cookie("user_login", email);
+            userCookie.setMaxAge(60 * 60 * 24 * 7);
+            response.addCookie(userCookie);
         }
         request.getSession().setAttribute("user", user);
         
