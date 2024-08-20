@@ -1,35 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import data_access.Account_DAO;
+import data_access.UserDataAccess;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URLEncoder;
 import model.User;
 
-/**
- *
- * @author LONG
- */
 public class LoginController extends HttpServlet {
-    private Account_DAO dao;
+    private UserDataAccess dao;
     
     @Override
     public void init() throws ServletException {
-        dao = new Account_DAO();
+        dao = UserDataAccess.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -41,7 +32,7 @@ public class LoginController extends HttpServlet {
         String remember_me = request.getParameter("remember_me");
         User user = dao.login(email,password);
         if(user==null){
-            response.sendRedirect(request.getContextPath()+"/login");
+            response.sendRedirect(request.getContextPath() + "/login?err=" + URLEncoder.encode("Wrong email or password!", "UTF-8"));
             return;
         }
         
@@ -51,16 +42,6 @@ public class LoginController extends HttpServlet {
             response.addCookie(userCookie);
         }
         request.getSession().setAttribute("user", user);
-        
-        
         response.sendRedirect(request.getContextPath());
     }
-    
-    
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-
 }

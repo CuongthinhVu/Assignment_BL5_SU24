@@ -4,7 +4,7 @@
 create table [user] (
 	[id] int primary key identity,
 	[email] varchar(255) unique not null,
-	[password_hash] char(69) not null,
+	[password] varchar(max) not null,
 	[created_at] datetime2 not null default getutcdate()
 );
 
@@ -82,7 +82,6 @@ create table [course_content] (
 	[type] varchar(255) not null check([type] in ('Lesson', 'Quiz')),
 	[title] nvarchar(255) not null,
 	[content] ntext not null,
-	[blocked] bit not null,
 	[created_at] datetime2 not null default getutcdate()
 );
 
