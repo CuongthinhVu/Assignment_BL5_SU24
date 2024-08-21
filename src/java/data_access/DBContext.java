@@ -8,9 +8,9 @@ public class DBContext {
     private static Connection conn = null;
     public static Connection getConnection() {
         if (conn != null) return conn;
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=AssBl5Su24";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=AssBL5Su24";
         String USER_NAME = "sa";
-        String PASSWORD = "sa";
+        String PASSWORD = "Thinhkobe0612";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(url, USER_NAME, PASSWORD);
