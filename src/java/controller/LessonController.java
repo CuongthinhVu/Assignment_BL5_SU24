@@ -2,6 +2,7 @@ package controller;
 
 import data_access.CourseDataAccess;
 import data_access.EnrollDataAccess;
+import data_access.ReportDataAccess;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -16,11 +17,13 @@ import org.commonmark.renderer.html.HtmlRenderer;
 public class LessonController extends HttpServlet {
     private CourseDataAccess courseDAO;
     private EnrollDataAccess enrollDAO;
+    private ReportDataAccess reportDAO;
 
     @Override
     public void init() throws ServletException {
         courseDAO = CourseDataAccess.getInstance();
         enrollDAO = EnrollDataAccess.getInstance();
+        reportDAO = ReportDataAccess.getInstance();
     }
     
     @Override
@@ -63,7 +66,9 @@ public class LessonController extends HttpServlet {
         }
         User user = (User)request.getSession().getAttribute("user");
         enrollDAO.addLessonProgress(lesson.getId(), user.getId());
-        enrollDAO.checkCourseCompleted(lesson.getCourseId(), user.getId());
+        if (enrollDAO.checkCourseCompleted(lesson.getCourseId(), user.getId())) {
+            reportDAO.userCompleteCourse(lesson.getCourseId());
+        }
         response.sendRedirect(request.getContextPath() + "/course_detail?id=" + lesson.getCourseId());
     }
 }

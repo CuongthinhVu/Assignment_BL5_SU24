@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,7 +29,40 @@
                 </div>
             </div>
         </c:if>
-        <!-- Put the statistics here -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="row pt-3 mx-0">
+                            <div class="col-2 px-0">
+                                <div class="bg-success text-center p-4">
+                                    <h1 class="text-white">${courses_size}</h1>
+                                    <h6 class="text-uppercase text-white">Number of<span class="d-block">Courses</span></h6>
+                                </div>
+                            </div>
+                            <div class="col-2 px-0">
+                                <div class="bg-primary text-center p-4">
+                                    <h1 class="text-white">${active_size}</h1>
+                                    <h6 class="text-uppercase text-white">Active<span class="d-block">Courses</span></h6>
+                                </div>
+                            </div>
+                            <div class="col-2 px-0">
+                                <div class="bg-secondary text-center p-4">
+                                    <h1 class="text-white">${user_size}</h1>
+                                    <h6 class="text-uppercase text-white">Number of<span class="d-block">Users</span></h6>
+                                </div>
+                            </div>
+                            <div class="col-6 px-0">
+                                <div class="bg-warning text-center p-4">
+                                    <h1 class="text-white"><fmt:formatNumber value="${total_profit}" type="currency" currencyCode="VND" maxFractionDigits="0"/></h1>
+                                    <h6 class="text-uppercase text-white">Total<span class="d-block">Profits</span></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container mt-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Manage Courses</h2>
@@ -41,17 +75,28 @@
                         <th>#</th>
                         <th>Thumbnail</th>
                         <th>Course Title</th>
+                        <th>Stats</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="course" items="${course_list}" varStatus="status">
+                        <c:forEach var="report" items="${report_list}">
+                            <c:if test="${report.courseId eq course.id}">
+                                <c:set var="course_report" value="${report}"/>
+                            </c:if>
+                        </c:forEach>
                         <tr>
                             <td>${status.index + 1}</td>
                             <td>
                                 <img src="${pageContext.request.contextPath}/img/${course.imagePath}" alt="Course Thumbnail" class="img-fluid" style="max-width: 100px;">
                             </td>
                             <td>${course.title}</td>
+                            <td>
+                                <div class="text-muted">No. Purchase: ${course_report.purchaseCount}</div>
+                                <div class="text-muted">No. Completed: ${course_report.completedCount}</div>
+                                <div class="text-muted">Profits: <fmt:formatNumber value="${course_report.profit}" type="currency" currencyCode="VND" maxFractionDigits="0"/></div>
+                            </td>
                             <td>
                                 <c:choose>
                                     <c:when test="${course.active eq true}">

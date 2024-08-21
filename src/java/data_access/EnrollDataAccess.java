@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import model.Category;
+import model.Course;
 import model.Enrollment;
 import model.QuizResult;
 
@@ -43,6 +45,94 @@ public class EnrollDataAccess {
             e.printStackTrace();
         }
         return en;
+    }
+    
+    public List<Course> getAllInProgressCourses(int studentId) {
+        String sql = """
+                     select c.*, cat.[id] as category_id, cat.[name] as category_name
+                     from [course] as c
+                     left join [course_category] as cc on c.[id] = cc.[course_id]
+                     left join [category] as cat on cc.[category_id] = cat.[id]
+                     join [enrollment] as en on en.[course_id] = c.[id]
+                     where en.[student_id] = ? and en.[status] = 'In Progress'
+                     order by c.[id], cat.[id];
+                     """;
+        List<Course> list = new ArrayList<>();
+        Course curr = null;
+        int lastId = -1;
+        try (PreparedStatement statement = DBContext.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, studentId);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int courseId = res.getInt("id");
+                if (curr == null || lastId != courseId) {
+                    curr = new Course();
+                    curr.setId(courseId);
+                    curr.setTitle(res.getString("title"));
+                    curr.setDescription(res.getString("description"));
+                    curr.setOriginalPrice(res.getInt("original_price"));
+                    curr.setSalePrice(res.getInt("sale_price"));
+                    curr.setImagePath(res.getString("image_path"));
+                    curr.setActive(res.getBoolean("active"));
+                    curr.setCreatedAt(res.getTimestamp("created_at").toLocalDateTime());
+                    curr.setCategories(new ArrayList<>());
+                    list.add(curr);
+                    lastId = courseId;
+                }
+                int categoryId = res.getInt("category_id");
+                if (categoryId != 0) {
+                    curr.getCategories().add(new Category(categoryId, res.getString("category_name")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Course> getAllCompletedCourses(int studentId) {
+        String sql = """
+                     select c.*, cat.[id] as category_id, cat.[name] as category_name
+                     from [course] as c
+                     left join [course_category] as cc on c.[id] = cc.[course_id]
+                     left join [category] as cat on cc.[category_id] = cat.[id]
+                     join [enrollment] as en on en.[course_id] = c.[id]
+                     where en.[student_id] = ? and en.[status] = 'Completed'
+                     order by c.[id], cat.[id];
+                     """;
+        List<Course> list = new ArrayList<>();
+        Course curr = null;
+        int lastId = -1;
+        try (PreparedStatement statement = DBContext.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, studentId);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int courseId = res.getInt("id");
+                if (curr == null || lastId != courseId) {
+                    curr = new Course();
+                    curr.setId(courseId);
+                    curr.setTitle(res.getString("title"));
+                    curr.setDescription(res.getString("description"));
+                    curr.setOriginalPrice(res.getInt("original_price"));
+                    curr.setSalePrice(res.getInt("sale_price"));
+                    curr.setImagePath(res.getString("image_path"));
+                    curr.setActive(res.getBoolean("active"));
+                    curr.setCreatedAt(res.getTimestamp("created_at").toLocalDateTime());
+                    curr.setCategories(new ArrayList<>());
+                    list.add(curr);
+                    lastId = courseId;
+                }
+                int categoryId = res.getInt("category_id");
+                if (categoryId != 0) {
+                    curr.getCategories().add(new Category(categoryId, res.getString("category_name")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
     
     public void addPayment(int courseId, String courseTitle, int studentId, int amount) {

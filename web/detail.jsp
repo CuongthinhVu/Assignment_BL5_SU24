@@ -75,7 +75,14 @@
                             <h6 class="text-white my-3">Contents</h6>
                             <h6 class="text-white my-3">${content_list.size()}</h6>
                         </div>
-                        <h5 class="text-white py-3 px-4 m-0">Course Price: <fmt:formatNumber value="${course.salePrice}" type="currency" currencyCode="VND"/></h5>
+                            <c:choose>
+                                <c:when test="${course.salePrice > 0}">
+                                    <h5 class="text-white py-3 px-4 m-0">Course Price: <fmt:formatNumber value="${course.salePrice}" type="currency" currencyCode="VND"/></h5>
+                                </c:when>
+                                <c:otherwise>
+                                    <h5 class="text-white py-3 px-4 m-0">Course Price: FREE</h5>
+                                </c:otherwise>
+                            </c:choose>
                         <div class="py-3 px-4">
                             <c:choose>
                                 <c:when test="${not empty enroll}">

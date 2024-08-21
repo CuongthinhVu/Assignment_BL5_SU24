@@ -127,6 +127,14 @@
         <servlet-name>AccountController</servlet-name>
         <servlet-class>controller.AccountController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CourseController</servlet-name>
+        <servlet-class>controller.CourseController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyCourseController</servlet-name>
+        <servlet-class>controller.MyCourseController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexController</servlet-name>
         <url-pattern/>
@@ -182,5 +190,13 @@
     <servlet-mapping>
         <servlet-name>AccountController</servlet-name>
         <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseController</servlet-name>
+        <url-pattern>/courses</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyCourseController</servlet-name>
+        <url-pattern>/my_courses</url-pattern>
     </servlet-mapping>
 </web-app>

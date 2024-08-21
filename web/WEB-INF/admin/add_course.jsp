@@ -50,13 +50,13 @@
                 <div class="row mb-3">
                     <div class="input-group col-6">
                         <div class="input-group-prepend"><span class="input-group-text">Price</span></div>
-                        <input type="number" name="price" min="1" class="form-control" required>
+                        <input type="number" name="price" min="0" class="form-control" required>
                         <div class="input-group-append"><span class="input-group-text">VND</span></div>
                     </div>
                     <div class="input-group col-6">
                         <div class="input-group-prepend"><span class="input-group-text">Thumbnail Image</span></div>
                         <div class="custom-file">
-                            <input type="file" name="thumbnail" accept="image/jpeg" class="custom-file-input" id="thumbnail" required>
+                            <input type="file" name="thumbnail" accept="image/png, image/jpeg" class="custom-file-input" id="thumbnail" required>
                             <label class="custom-file-label" for="thumbnail">Choose File</label>
                         </div>
                     </div>

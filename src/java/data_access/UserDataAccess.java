@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import model.User;
 
 public class UserDataAccess {
@@ -17,6 +19,24 @@ public class UserDataAccess {
             INSTANCE = new UserDataAccess();
         }
         return INSTANCE;
+    }
+    
+    public List<User> getAllUsers() {
+        String sql = "select * from [user];";
+        List<User> list = new ArrayList<>();
+        try (PreparedStatement statement = DBContext.getConnection().prepareStatement(sql)) {
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("id");
+                String mail = res.getString("email");
+                LocalDateTime createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                list.add(new User(id, mail, createdAt));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
     
     public boolean register(String email, String password) {

@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
             <div class="navbar-nav mx-auto py-0">
                 <a href="${pageContext.request.contextPath}/about.jsp" class="nav-item nav-link">About</a>
-                <a href="${pageContext.request.contextPath}/course.jsp" class="nav-item nav-link">Courses</a>
+                <a href="${pageContext.request.contextPath}/courses" class="nav-item nav-link">Courses</a>
                 <a href="${pageContext.request.contextPath}/contact.jsp" class="nav-item nav-link">Contact</a>
                 <c:if test="${not empty sessionScope.user}">
                     <div class="nav-item dropdown">

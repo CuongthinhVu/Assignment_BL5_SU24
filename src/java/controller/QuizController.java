@@ -3,6 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import data_access.CourseDataAccess;
 import data_access.EnrollDataAccess;
+import data_access.ReportDataAccess;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -16,11 +17,13 @@ import model.User;
 public class QuizController extends HttpServlet {
     private CourseDataAccess courseDAO;
     private EnrollDataAccess enrollDAO;
+    private ReportDataAccess reportDAO;
 
     @Override
     public void init() throws ServletException {
         courseDAO = CourseDataAccess.getInstance();
         enrollDAO = EnrollDataAccess.getInstance();
+        reportDAO = ReportDataAccess.getInstance();
     }
     
     @Override
@@ -106,7 +109,9 @@ public class QuizController extends HttpServlet {
             }
             User user = (User)request.getSession().getAttribute("user");
             enrollDAO.addOrUpdateQuizResult(quiz.getId(), user.getId(), correctAnswer, correctAnswer >= data.getPassGrade());
-            enrollDAO.checkCourseCompleted(quiz.getCourseId(), user.getId());
+            if (enrollDAO.checkCourseCompleted(quiz.getCourseId(), user.getId())) {
+                reportDAO.userCompleteCourse(quiz.getCourseId());
+            }
             request.setAttribute("quiz", quiz);
             request.setAttribute("question_list", data.getQuestions());
             request.setAttribute("correct_answer", correctAnswer);
