@@ -8,6 +8,14 @@
         <filter-name>AdminFilter</filter-name>
         <filter-class>filter.AdminFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filter.LoginFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>EnrollFilter</filter-name>
+        <filter-class>filter.EnrollFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>CookieFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -27,6 +35,38 @@
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/admin/manage_course_content</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/account</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/my_courses</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/checkout</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/lesson</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/quiz</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>EnrollFilter</filter-name>
+        <url-pattern>/checkout</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>EnrollFilter</filter-name>
+        <url-pattern>/lesson</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>EnrollFilter</filter-name>
+        <url-pattern>/quiz</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>IndexController</servlet-name>
@@ -79,6 +119,14 @@
         <servlet-name>CheckoutController</servlet-name>
         <servlet-class>controller.CheckoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuizController</servlet-name>
+        <servlet-class>controller.QuizController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountController</servlet-name>
+        <servlet-class>controller.AccountController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexController</servlet-name>
         <url-pattern/>
@@ -126,5 +174,13 @@
     <servlet-mapping>
         <servlet-name>CheckoutController</servlet-name>
         <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountController</servlet-name>
+        <url-pattern>/account</url-pattern>
     </servlet-mapping>
 </web-app>

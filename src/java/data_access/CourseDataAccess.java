@@ -82,6 +82,16 @@ public class CourseDataAccess {
         return list;
     }
     
+    public void deleteCategory(int id) {
+        String sql = "delete from [category] where [id] = ?;";
+        try (PreparedStatement statement = DBContext.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public Course getCourseById(int id) {
         String sql = """
                      select c.*, cat.[id] as category_id, cat.[name] as category_name
@@ -177,8 +187,10 @@ public class CourseDataAccess {
     public void addCourse(String title, String description, int price, String imagePath, boolean active, List<Integer> categories) {
         String addCourseSQL = "insert into [course]([title], [description], [original_price], [sale_price], [image_path], [active]) values (?, ?, ?, ?, ?, ?);";
         String addCategoriesSQL = "insert into [course_category]([course_id], [category_id]) values (?, ?);";
+        String addReportSQL = "insert into [course_report]([course_id], [purchase_count], [completed_count], [profit]) values (?, 0, 0, 0);";
         try (PreparedStatement courseStmt = DBContext.getConnection().prepareStatement(addCourseSQL, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement cateStmt = DBContext.getConnection().prepareStatement(addCategoriesSQL)) {
+             PreparedStatement cateStmt = DBContext.getConnection().prepareStatement(addCategoriesSQL);
+             PreparedStatement reportStmt = DBContext.getConnection().prepareStatement(addReportSQL)) {
             courseStmt.setString(1, title);
             courseStmt.setString(2, description);
             courseStmt.setInt(3, price);
@@ -198,6 +210,8 @@ public class CourseDataAccess {
                 cateStmt.setInt(2, catId);
                 cateStmt.executeUpdate();
             }
+            reportStmt.setInt(1, courseId);
+            reportStmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }

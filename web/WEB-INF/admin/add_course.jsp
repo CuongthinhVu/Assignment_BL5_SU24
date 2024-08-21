@@ -18,12 +18,23 @@
             </div>
         </c:if>
         <div class="container mt-5">
-            <h2>Add New Category</h2>
+            <h2>Manage Categories</h2>
             <form action="${pageContext.request.contextPath}/admin/add_course" method="post">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend"><span class="input-group-text">Category</span></div>
                     <input type="text" name="new_category" placeholder="New Category" class="form-control">
                     <button type="submit" name="action" value="add_category" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+            <form action="${pageContext.request.contextPath}/admin/add_course" method="post">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend"><span class="input-group-text">Category</span></div>
+                    <select name="category" class="form-control">
+                        <c:forEach var="cate" items="${category_list}">
+                            <option value="${cate.id}">${cate.name}</option>
+                        </c:forEach>
+                    </select>
+                    <button type="submit" name="action" value="delete_category" class="btn btn-primary">Delete</button>
                 </div>
             </form>
             <h2>Add New Course</h2>
