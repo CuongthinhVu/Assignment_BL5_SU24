@@ -80,4 +80,25 @@ public class UserDataAccess {
         }
         return user;
     }
+    
+    public void changePassword(int id, String password) {
+        String sql = "update [user] set [password] = ? where [id] = ?;";
+        try (PreparedStatement statement = DBContext.getConnection().prepareStatement(sql)) {
+            statement.setString(1, password);
+            statement.setInt(2, id);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteAccount(int id) {
+        String sql = "delete from [user] where [id] = ?;";
+        try (PreparedStatement statement = DBContext.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

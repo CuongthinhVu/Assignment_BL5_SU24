@@ -121,7 +121,8 @@ create table [lesson_progress] (
 create table [quiz_result] (
 	[quiz_id] int not null foreign key references [course_content]([id]) on delete cascade,
 	[student_id] int not null foreign key references [user]([id]) on delete cascade,
-	[grade] decimal(19, 4) not null,
+	[grade] int not null,
+	[passed] bit not null,
 	primary key([quiz_id], [student_id])
 );
 

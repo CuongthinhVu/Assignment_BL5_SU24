@@ -121,7 +121,7 @@
                     <div class="input-group-prepend"><span class="input-group-text">Title</span></div>
                     <input type="text" name="title" value="${select_content.title}" class="form-control" required>
                 </div>
-                <textarea name="lesson_content" rows="10" class="form-control mb-2" id="lesson_editor" required>${select_content.content}</textarea>
+                <textarea name="lesson_content" rows="10" class="form-control mb-2" id="lesson_editor">${select_content.content}</textarea>
                 <button type="submit" name="action" value="add_lesson" class="btn btn-primary mb-5">Add Lesson</button>
                 <button type="submit" name="action" value="update_lesson" class="btn btn-primary mb-5">Update</button>
             </form>

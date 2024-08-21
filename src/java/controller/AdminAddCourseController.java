@@ -38,6 +38,17 @@ public class AdminAddCourseController extends HttpServlet {
         if (action.equals("add_category")) {
             String category = request.getParameter("new_category");
             dao.addCategory(category);
+            response.sendRedirect(request.getContextPath() + "/admin/add_course");
+        }
+        else if (action.equals("delete_category")) {
+            String categoryIdStr = request.getParameter("category");
+            if (categoryIdStr == null || !categoryIdStr.matches("^[0-9]+$")) {
+                response.sendError(404);
+                return;
+            }
+            int id = Integer.parseInt(categoryIdStr);
+            dao.deleteCategory(id);
+            response.sendRedirect(request.getContextPath() + "/admin/add_course");
         }
         else if (action.equals("add_course")) {
             String title = request.getParameter("title");
@@ -56,7 +67,7 @@ public class AdminAddCourseController extends HttpServlet {
                 categories.add(Integer.valueOf(id));
             }
             dao.addCourse(title, description, Integer.parseInt(price), imageName, false, categories);
+            response.sendRedirect(request.getContextPath() + "/admin/home");
         }
-        response.sendRedirect(request.getContextPath() + "/admin/home");
     }
 }
